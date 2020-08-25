@@ -11,10 +11,10 @@ ThisBuild / git.gitHeadCommit := GitKeys.gitReader.value.withGit(
                                     .headCommit.map(_.abbreviate(8).name)
                                  )
 
-ThisBuild / organization := "com.arkondata"
+ThisBuild / organization := "com.github.fehu"
 
-ThisBuild / homepage   := Some(url("https://github.com/Grupo-Abraxas/slothql"))
-ThisBuild / scmInfo    := Some(ScmInfo(homepage.value.get, "git@github.com:Grupo-Abraxas/slothql.git"))
+ThisBuild / homepage   := Some(url("https://github.com/fehu/slothql"))
+ThisBuild / scmInfo    := Some(ScmInfo(homepage.value.get, "git@github.com:fehu/slothql.git"))
 ThisBuild / developers := List(
                             Developer("fehu", "Dmitry K", "kdn.kovalev@gmail.com", url("https://github.com/fehu"))
                           )
@@ -53,9 +53,9 @@ lazy val cypher = (project in file("cypher"))
     initialCommands in console :=
       """
         |import org.neo4j.driver.{ AuthTokens, GraphDatabase }
-        |import com.arkondata.slothql.cypher.syntax._
-        |import com.arkondata.slothql.cypher.CypherFragment
-        |import com.arkondata.slothql.neo4j.Neo4jCypherTransactor
+        |import com.github.fehu.slothql.cypher.syntax._
+        |import com.github.fehu.slothql.cypher.CypherFragment
+        |import com.github.fehu.slothql.neo4j.Neo4jCypherTransactor
       """.stripMargin
   )
 
