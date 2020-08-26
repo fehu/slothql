@@ -137,4 +137,23 @@ trait Functor[From <: Cat, To <: Cat] {
   type MapArrow[A <: From#Arr] <: {
     type Out <: To#Arr
   }
+
+  object MapArrowCommon {
+    type Aux[F <: From#Arr, G <: To#Arr] = MapArrow[F] { type Out = G }
+
+    trait MapComposition {
+      implicit def mapComposition[
+        EF <: From#Arr,
+        EG <: From#Arr,
+        GF <: To#Arr,
+        GG <: To#Arr
+      ](
+        implicit
+        mapF: Aux[EF, GF],
+        mapG: Aux[EG, GG]
+      ): Aux[From#Compose[EF, EG], To#Compose[GF, GG]] = instance
+
+      protected def instance[F <: From#Arr, G <: To#Arr]: Aux[F, G]
+    }
+  }
 }

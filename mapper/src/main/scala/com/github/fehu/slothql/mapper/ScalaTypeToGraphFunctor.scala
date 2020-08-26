@@ -78,7 +78,7 @@ object ScalaTypeToGraphFunctor extends Functor[ScalaType.ScalaTypeCat, Graph.Gra
     type Out <: Graph.GraphCat.Arr
   }
 
-  object MapArrow {
+  object MapArrow extends MapArrowCommon.MapComposition {
     type Aux[E <: ScalaExpr, A <: Graph.GraphCat.Arr] = MapArrow[E] { type Out = A }
 
     def apply[E <: ScalaExpr](implicit map: MapArrow[E]): MapArrow.Aux[E, map.Out] = map
@@ -96,16 +96,14 @@ object ScalaTypeToGraphFunctor extends Functor[ScalaType.ScalaTypeCat, Graph.Gra
       implicit
       mapP: MapObject.Aux[P, N],
       mapR: MapObject.Aux[R, Pp]
-    ): MapArrow.Aux[ScalaExpr.FieldSelection[P, K, R], Graph.GraphCat.NodeProp[N, K, Pp]] =
-      instance.asInstanceOf[MapArrow.Aux[ScalaExpr.FieldSelection[P, K, R], Graph.GraphCat.NodeProp[N, K, Pp]]]
+    ): MapArrow.Aux[ScalaExpr.FieldSelection[P, K, R], Graph.GraphCat.NodeProp[N, K, Pp]] = instance
 
     /**
      * Maps [[ScalaExpr.AlternativeSelection]] to [[Graph.GraphCat.NodeLabel]].
      */
     implicit def mapAlternativeSelection[C <: ScalaType.Coproduct, K <: String, R <: ScalaType.Product, N <: Graph.Node](
       implicit mapC: MapObject.Aux[C, N]
-    ): MapArrow.Aux[ScalaExpr.AlternativeSelection[C, K, R], Graph.GraphCat.NodeLabel[N, C#Name]] =
-      instance.asInstanceOf[MapArrow.Aux[ScalaExpr.AlternativeSelection[C, K, R], Graph.GraphCat.NodeLabel[N, C#Name]]]
+    ): MapArrow.Aux[ScalaExpr.AlternativeSelection[C, K, R], Graph.GraphCat.NodeLabel[N, C#Name]] = instance
 
     /**
      * Maps [[ScalaExpr.FieldSelection]] of [[ScalaType.Product]] to [[Graph.GraphCat.RelTgt]] {{{∘}}} [[Graph.GraphCat.OutRel]].
@@ -127,17 +125,10 @@ object ScalaTypeToGraphFunctor extends Functor[ScalaType.ScalaTypeCat, Graph.Gra
           Graph.GraphCat.RelTgt[Graph.Rel.Aux[K, isOpt.Out], N2],
           Graph.GraphCat.OutRel[N1, Graph.Rel.Aux[K, isOpt.Out]]
         ]
-      ] =
-      instance.asInstanceOf[
-        MapArrow.Aux[
-          ScalaExpr.FieldSelection[P0, K, P1],
-          Graph.GraphCat.Compose[
-            Graph.GraphCat.RelTgt[Graph.Rel.Aux[K, isOpt.Out], N2],
-            Graph.GraphCat.OutRel[N1, Graph.Rel.Aux[K, isOpt.Out]]
-          ]
-        ]
-      ]
+      ] = instance
 
-    private lazy val instance = new MapArrow[ScalaExpr] {}
+    protected def instance[F <: ScalaExpr, G <: Graph.GraphCat.Arr]: MapArrow.Aux[F, G] =
+      _instance.asInstanceOf[MapArrow.Aux[F, G]]
+    private lazy val _instance = new MapArrow[ScalaExpr] {}
   }
 }

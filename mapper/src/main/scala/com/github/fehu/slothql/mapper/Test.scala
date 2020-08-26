@@ -32,8 +32,7 @@ object Test {
   val mapEP2z = ScalaTypeToGraphFunctor.MapArrow[EP2z]
   val mapEP2p = ScalaTypeToGraphFunctor.MapArrow[EP2p]
 
-  // TODO: support composition
-  // val mapEP2px = ScalaTypeToGraphFunctor.MapArrow[EP2px]
-  // val mapEP2py = ScalaTypeToGraphFunctor.MapArrow[EP2py]
+   val mapEP2px = ScalaTypeToGraphFunctor.MapArrow[EP2px]
+   val mapEP2py = ScalaTypeToGraphFunctor.MapArrow[EP2py]
 
 }
