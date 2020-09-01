@@ -1,4 +1,4 @@
-package com.arkondata.slothql.neo4j
+package com.github.fehu.slothql.neo4j
 
 import java.util.concurrent.TimeUnit
 
@@ -14,10 +14,10 @@ import io.opentracing.tag.Tags
 import org.neo4j.driver.async.ResultCursor
 import org.neo4j.driver.summary.ResultSummary
 
-import com.arkondata.opentracing.{ Traced, Traced2 }
-import com.arkondata.opentracing.fs2._
-import com.arkondata.opentracing.syntax._
-import com.arkondata.slothql.cypher.CypherStatement
+import com.github.fehu.opentracing.{ Traced, Traced2 }
+import com.github.fehu.opentracing.fs2._
+import com.github.fehu.opentracing.syntax._
+import com.github.fehu.slothql.cypher.CypherStatement
 
 class TracedNeo4jTransactor[T[_[*], *], F[_]: ConcurrentEffect](session: T[F, Session])
                            (implicit ce: ConcurrentEffect[T[F, *]], cs: ContextShift[T[F, *]], traced: Traced2[T, F])
